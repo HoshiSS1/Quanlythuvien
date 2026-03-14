@@ -1,0 +1,431 @@
+/* =============================================================================
+   THEME: SOFT TECH PROFESSIONAL
+   Color Palette: Slate Grey (Neutral) + Indigo/Violet (Accent)
+   Style: Rounded, Clean, Compact
+   ============================================================================= */
+
+/* 1. GLOBAL SETTINGS */
+.root {
+    -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f8fafc; /* Nền trắng xám rất sáng */
+    -fx-text-fill: #1e293b;        /* Chữ màu xám đậm (Slate-800) */
+}
+
+/* Scrollbar tinh tế, bo tròn */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.scroll-bar .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 10;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+/* =============================================================================
+   2. LOGIN SCREEN - COMPACT & SOFT (Nhỏ gọn & Mềm mại)
+   ============================================================================= */
+.login-root {
+    -fx-background-image: url("https://images.unsplash.com/photo-1507842217343-583bb7270b66");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.dark-overlay {
+    -fx-background-color: rgba(15, 23, 42, 0.6); /* Phủ tối nhẹ vừa phải */
+}
+
+.glass-card {
+    -fx-background-color: rgba(255, 255, 255, 0.95); /* Trắng đục gần như hoàn toàn */
+    -fx-background-radius: 24;     /* Bo góc mềm mại (Soft Round) */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 30, 0, 0, 10); /* Shadow mềm, lan tỏa */
+
+    /* Thu nhỏ kích thước theo yêu cầu */
+    -fx-padding: 35 40;            /* Giảm padding */
+    -fx-max-width: 380;            /* Form nhỏ gọn hơn (trước là 480) */
+    -fx-max-height: 600;
+
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 24;
+}
+
+/* Header trong Login */
+.branding-header {
+    -fx-spacing: 5;
+    -fx-alignment: center;
+    -fx-padding: 0 0 15 0;
+}
+
+.logo-icon {
+    -fx-font-size: 42px;           /* Giảm size icon chút cho cân đối */
+    -fx-text-fill: #6366f1;        /* Màu Indigo chủ đạo */
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 10, 0, 0, 0);
+}
+
+.logo-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #1e293b;
+    -fx-letter-spacing: 1px;
+}
+
+.login-header-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748b;
+    -fx-padding: 5 0 0 0;
+}
+
+/* Input Fields - Bo tròn nhiều hơn (12px) */
+
+.matte-input {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 12;     /* Bo tròn mềm */
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-padding: 10 15;            /* Padding thoải mái */
+    -fx-font-size: 14px;
+    -fx-text-fill: #334155;
+}
+
+.matte-input:focused {
+    -fx-background-color: white;
+    -fx-border-color: #6366f1;     /* Viền focus màu Indigo */
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.2), 8, 0, 0, 0);
+}
+
+/* Checkbox & Links */
+.login-box, .register-box {
+    -fx-spacing: 12;               /* Giảm khoảng cách các phần tử */
+    -fx-alignment: top-left;
+}
+
+.link-wrapper {
+    -fx-alignment: center;
+    -fx-padding: 10 0 0 0;
+}
+
+.link-text {
+    -fx-text-fill: #6366f1;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+.link-text:hover {
+    -fx-underline: true;
+    -fx-text-fill: #4338ca;
+}
+
+/* =============================================================================
+   3. SIDEBAR - DARK SLATE (Sang trọng, không bị xanh quá)
+   ============================================================================= */
+.sidebar {
+    -fx-background-color: #111827; /* Màu đen than (Gray-900) - Rất lì và sang */
+    -fx-padding: 25 15;
+    -fx-pref-width: 260;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 2, 0);
+}
+
+.sidebar .logo-text {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+}
+.sidebar .logo-box {
+    -fx-padding: 20 0 30 0;
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+
+/* Menu Buttons */
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #9ca3af;        /* Xám nhạt */
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-padding: 12 20;
+    -fx-background-radius: 12;     /* Bo góc nút Sidebar */
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.menu-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: white;
+}
+
+.menu-active {
+    /* Gradient Tím - Xanh nhẹ nhàng */
+    -fx-background-color: linear-gradient(to right, #6366f1, #8b5cf6);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 10, 0, 0, 4);
+}
+
+.bottom-actions {
+    -fx-padding: 20 10;
+    -fx-spacing: 12;
+}
+
+/* Logout Button */
+.btn-logout-sidebar {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #ef4444; /* Đỏ nhạt */
+    -fx-background-radius: 12;
+    -fx-font-weight: bold;
+    -fx-padding: 12;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+.btn-logout-sidebar:hover {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+
+/* =============================================================================
+   4. DASHBOARD CONTENT
+   ============================================================================= */
+.main-content-area {
+    -fx-padding: 30;
+    -fx-spacing: 25;
+    -fx-background-color: #f8fafc;
+}
+
+.top-bar {
+    -fx-padding: 20 30 10 30;
+    -fx-background-color: #f8fafc;
+}
+
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #1e293b;
+}
+
+/* Stat Cards - Bo tròn mềm mại */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;     /* Bo góc 16px */
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 5); /* Shadow mờ ảo */
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+}
+
+/* Icon line bên trái thẻ để phân biệt */
+.stat-blue   { -fx-border-color: transparent transparent transparent #6366f1; -fx-border-width: 0 0 0 5; }
+.stat-green  { -fx-border-color: transparent transparent transparent #10b981; -fx-border-width: 0 0 0 5; }
+.stat-red    { -fx-border-color: transparent transparent transparent #f43f5e; -fx-border-width: 0 0 0 5; }
+.stat-orange { -fx-border-color: transparent transparent transparent #f59e0b; -fx-border-width: 0 0 0 5; }
+
+.stat-value {
+    -fx-font-size: 30px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #1e293b;
+}
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: bold;
+    -fx-text-transform: uppercase;
+}
+.stat-grid {
+    -fx-hgap: 20; -fx-vgap: 20;
+}
+
+/* Chart Cards */
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 20, 0, 0, 8);
+    -fx-spacing: 15;
+}
+
+.chart-title-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+/* =============================================================================
+   5. BUTTONS - Style Soft Gradient & Rounded
+   ============================================================================= */
+.btn-gradient {
+    /* Gradient chính cho Login & Register */
+    -fx-background-color: linear-gradient(to right, #6366f1, #8b5cf6);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 12;     /* Bo tròn đồng bộ với input */
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 12, 0, 0, 3);
+}
+.btn-gradient:hover {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #7c3aed);
+    -fx-translate-y: -2;
+}
+
+/* Nút Export (CSV) - Màu Teal hiện đại */
+.btn-export {
+    -fx-background-color: linear-gradient(to right, #0d9488, #0f766e);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(gaussian, rgba(13, 148, 136, 0.3), 8, 0, 0, 2);
+}
+.btn-export:hover { -fx-translate-y: -2; }
+
+/* Các nút chức năng (Add/Edit/Delete) */
+.btn-action {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 10;     /* Bo góc 10px */
+    -fx-cursor: hand;
+    -fx-min-width: 90;
+    -fx-pref-height: 38;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+.btn-action:pressed { -fx-translate-y: 1; -fx-effect: none; }
+
+.btn-add    { -fx-background-color: #6366f1; } /* Indigo */
+.btn-add:hover { -fx-background-color: #4f46e5; }
+
+.btn-edit   { -fx-background-color: #f59e0b; } /* Amber */
+.btn-edit:hover { -fx-background-color: #d97706; }
+
+.btn-delete { -fx-background-color: #ef4444; } /* Red */
+.btn-delete:hover { -fx-background-color: #dc2626; }
+
+.btn-return { -fx-background-color: #10b981; } /* Emerald */
+.btn-return:hover { -fx-background-color: #059669; }
+
+/* =============================================================================
+   6. TABLE VIEW - Bo góc & Sạch (Clean)
+   ============================================================================= */
+.table-container {
+    -fx-padding: 0 20 20 0;
+    -fx-spacing: 15;
+}
+
+.modern-table {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 15, 0, 0, 5);
+    -fx-padding: 10; /* Padding trong bảng tạo khoảng cách với viền */
+}
+
+/* Header Bảng - Màu nền rất nhạt, bo góc */
+.modern-table .column-header-background {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.modern-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 14 10;
+}
+
+.modern-table .column-header .label {
+    -fx-text-fill: #475569;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+}
+
+/* Dòng dữ liệu */
+.modern-table .table-cell {
+    -fx-padding: 12 10;
+    -fx-alignment: center-left;
+    -fx-text-fill: #334155;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+}
+
+.modern-table .table-row-cell {
+    -fx-background-color: white;
+}
+.modern-table .table-row-cell:hover {
+    -fx-background-color: #f8fafc;
+}
+.modern-table .table-row-cell:selected {
+    -fx-background-color: #e0e7ff; /* Indigo rất nhạt */
+}
+.modern-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: #3730a3;
+}
+
+/* Toolbar & Search */
+.toolbar {
+    -fx-spacing: 12;
+    -fx-padding: 0 0 15 0;
+    -fx-alignment: center-left;
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 12 15;        /* Padding lớn hơn cho ô cao ráo */
+    -fx-font-size: 15px;       /* Chữ to hơn chút */
+    -fx-pref-height: 45;       /* Chiều cao 45px */
+    -fx-pref-width: 400;       /* Chiều rộng mặc định 400px */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);
+}
+
+.search-field:focused {
+    -fx-border-color: #6366f1;
+    -fx-border-width: 1.5;
+    -fx-background-color: #ffffff;
+}
+
+/* Badge Trạng thái - Style viên thuốc */
+.badge {
+    -fx-padding: 5 15;
+    -fx-background-radius: 20;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.badge-dang-muon { -fx-background-color: #f59e0b; }
+.badge-da-tra    { -fx-background-color: #10b981; }
+
+/* =============================================================================
+   7. CHART STYLES - Tùy chỉnh màu sắc biểu đồ để phù hợp giao diện (Indigo/Violet chủ đạo)
+   ============================================================================= */
+
+/* Màu cho PieChart & BarChart - Lựa chọn B (Trực quan - Dễ phân biệt) */
+.default-color0.chart-pie, .chart-bar.default-color0 { -fx-pie-color: #6366f1; -fx-bar-fill: #6366f1; } /* Primary - Indigo */
+.default-color1.chart-pie, .chart-bar.default-color1 { -fx-pie-color: #10b981; -fx-bar-fill: #10b981; } /* Success - Xanh lá (tăng trưởng) */
+.default-color2.chart-pie, .chart-bar.default-color2 { -fx-pie-color: #f59e0b; -fx-bar-fill: #f59e0b; } /* Warning - Cam (cần lưu ý) */
+.default-color3.chart-pie, .chart-bar.default-color3 { -fx-pie-color: #0ea5e9; -fx-bar-fill: #0ea5e9; } /* Sky Blue (thông tin chung) */
+.default-color4.chart-pie, .chart-bar.default-color4 { -fx-pie-color: #94a3b8; -fx-bar-fill: #94a3b8; } /* Giữ nguyên cho color4 nếu cần mở rộng */
+
+/* Legend và Axis tinh tế */
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+.chart-legend-item-symbol {
+    -fx-background-radius: 4;
+}
+.axis-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+}
+.chart-plot-background {
+    -fx-background-color: #f8fafc; /* Nền biểu đồ hài hòa với dashboard */
+}
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #e2e8f0; /* Lưới nhạt */
+}
