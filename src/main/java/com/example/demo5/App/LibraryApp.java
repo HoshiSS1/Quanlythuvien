@@ -14,10 +14,15 @@ public class LibraryApp extends Application {
         this.primaryStage = stage;
         primaryStage.setTitle("LMS Prestige - Hệ Thống Quản Lý Thư Viện");
 
-        // === FIX HOÀN TOÀN LỖI FONT TIẾNG VIỆT ===
-        System.setProperty("prism.text", "t2k");
+        // ==================== FIX FONT & MẬT KHẨU ====================
+        System.setProperty("prism.text", "t2k");           // Giữ nguyên
         System.setProperty("prism.lcdtext", "false");
         System.setProperty("prism.subpixeltext", "false");
+
+        // DÒNG NÀY RẤT QUAN TRỌNG để fix mật khẩu hiển thị bình thường
+        System.setProperty("javafx.font", "Segoe UI");
+        // Hoặc dùng font hệ thống phổ biến khác:
+        // System.setProperty("javafx.font", "Arial");
 
         showLoginScreen();
         primaryStage.show();

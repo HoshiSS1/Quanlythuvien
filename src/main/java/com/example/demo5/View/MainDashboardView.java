@@ -6,6 +6,7 @@ import com.example.demo5.Service.BookService;
 import com.example.demo5.Service.LibraryService;
 import com.example.demo5.Service.ReaderService;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
@@ -168,37 +169,92 @@ public class MainDashboardView extends StackPane {
         lblPageTitle.setText(title);
         mainContentArea.getChildren().setAll(view);
     }
-    // Hiển thị dashboard với các thống kê và biểu đồ
+    // Hiển thị dashboard với các thống kê và biểu đồ (tải bất đồng bộ)
     private void showDashboard() {
         lblPageTitle.setText("Tổng Quan Hệ Thống");
         mainContentArea.getChildren().clear();
-// Lấy dữ liệu thống kê
-        var books = BookService.getBooks();
-        var readers = ReaderService.getReaders();
-        var loans = LibraryService.getAllLoans();
-// Tính toán các con số thống kê
-        long totalBooks = books.stream().mapToLong(Book::getQuantity).sum();
-        long uniqueTitles = books.size();
-        long borrowed = loans.stream().filter(l -> !l.isReturned()).count();
-        long totalReaders = readers.size();
-// Tạo lưới thẻ thống kê
-        GridPane grid = new GridPane();
-        grid.getStyleClass().add("stat-grid");  // Hgap, vgap sang CSS
-        grid.add(createStatCard("Tổng Số Cuốn Sách", String.valueOf(totalBooks), "stat-blue"), 0, 0);
-        grid.add(createStatCard("Đầu Sách Khác Nhau", String.valueOf(uniqueTitles), "stat-green"), 1, 0);
-        grid.add(createStatCard("Sách Đang Được Mượn", String.valueOf(borrowed), "stat-red"), 2, 0);
-        grid.add(createStatCard("Tổng Số Bạn Đọc", String.valueOf(totalReaders), "stat-orange"), 3, 0);
-// Tạo container cho biểu đồ
-        HBox chartsContainer = new HBox();
-        chartsContainer.getStyleClass().add("charts-container");  // Spacing, alignment sang CSS
-// Tạo và thêm biểu đồ vào container
-        VBox pieBox = createChartWrapper(createPieChart(books, loans), "Tình Trạng Kho Sách");
-        VBox barBox = createChartWrapper(createBarChart(books), "Phân Loại Theo Thể Loại");
-        HBox.setHgrow(pieBox, Priority.ALWAYS);
-        HBox.setHgrow(barBox, Priority.ALWAYS);
-        chartsContainer.getChildren().addAll(pieBox, barBox);
-        // Thêm lưới và biểu đồ vào khu vực chính
-        mainContentArea.getChildren().addAll(grid, chartsContainer);
+
+        // Hiển thị vòng xoay đang tải (ProgressIndicator) không làm đơ giao diện
+        ProgressIndicator loadingSpinner = new ProgressIndicator();
+        loadingSpinner.setPrefSize(60, 60);
+        Label lblLoading = new Label("Đang lấy dữ liệu từ hệ thống...");
+        lblLoading.setStyle("-fx-font-size: 14px; -fx-text-fill: #64748b;");
+        VBox loadingBox = new VBox(15, loadingSpinner, lblLoading);
+        loadingBox.setAlignment(javafx.geometry.Pos.CENTER);
+        loadingBox.setPadding(new Insets(100, 0, 0, 0));
+        VBox.setVgrow(loadingBox, Priority.ALWAYS);
+        
+        mainContentArea.getChildren().add(loadingBox);
+
+        // Tạo Task chạy ngầm trên Background Thread (tránh đóng băng UI)
+        javafx.concurrent.Task<Void> loadTask = new javafx.concurrent.Task<>() {
+            private java.util.List<Book> books;
+            private java.util.List<Reader> readers;
+            private java.util.List<Loan> loans;
+
+            @Override
+            protected Void call() throws Exception {
+                // Lấy dữ liệu từ Database (trên background thread)
+                books = BookService.getBooks();
+                readers = ReaderService.getReaders();
+                loans = LibraryService.getAllLoans();
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                // Khi tải xong, cập nhật UI (chạy trên JavaFX Application Thread)
+                mainContentArea.getChildren().clear();
+
+                // Tính toán các con số thống kê
+                long totalBooks = books.stream().mapToLong(Book::getQuantity).sum();
+                long borrowed = loans.stream().filter(l -> !l.isReturned()).count();
+                long overdue = loans.stream().filter(l -> l.isOverdue() && !l.isReturned()).count();
+                long totalReaders = readers.size();
+
+                // Tạo lưới thẻ thống kê
+                GridPane grid = new GridPane();
+                grid.getStyleClass().add("stat-grid");  
+                grid.add(createStatCard("Tổng Số Cuốn Sách", String.valueOf(totalBooks), "stat-blue"), 0, 0);
+                grid.add(createStatCard("Sách Đang Mượn", String.valueOf(borrowed), "stat-green"), 1, 0);
+                grid.add(createStatCard("Phiếu Quá Hạn", String.valueOf(overdue), "stat-red"), 2, 0);
+                grid.add(createStatCard("Tổng Số Bạn Đọc", String.valueOf(totalReaders), "stat-orange"), 3, 0);
+
+                // Tạo container cho biểu đồ
+                HBox chartsContainer = new HBox();
+                chartsContainer.setSpacing(30);
+                chartsContainer.getStyleClass().add("charts-container");
+
+                VBox pieBox = createChartWrapper(createPieChart(books, loans), "Tình Trạng Kho Sách");
+                VBox barBox = createChartWrapper(createBarChart(books), "Phân Loại Theo Thể Loại");
+                
+                HBox.setHgrow(pieBox, Priority.ALWAYS);
+                HBox.setHgrow(barBox, Priority.ALWAYS);
+                
+                chartsContainer.setPadding(new Insets(10, 0, 0, 0));
+                chartsContainer.getChildren().addAll(pieBox, barBox);
+                chartsContainer.setPrefHeight(450); 
+                VBox.setVgrow(chartsContainer, Priority.ALWAYS);
+
+                // Thêm lưới và biểu đồ vào khu vực chính
+                mainContentArea.getChildren().addAll(grid, chartsContainer);
+            }
+            
+            @Override
+            protected void failed() {
+                super.failed();
+                mainContentArea.getChildren().clear();
+                Label lblError = new Label("⚠ Lỗi khi tải dữ liệu từ máy chủ. Vui lòng thử lại!");
+                lblError.setStyle("-fx-text-fill: #dc2626; -fx-font-weight: bold; -fx-font-size: 16px;");
+                mainContentArea.getChildren().add(lblError);
+            }
+        };
+
+        // Chạy task bằng một Thread báo danh daemon (tự tắt khi app tắt)
+        Thread thread = new Thread(loadTask);
+        thread.setDaemon(true);
+        thread.start();
     }
     // Tạo thẻ thống kê
     private VBox createStatCard(String title, String value, String styleClass) {
@@ -223,15 +279,30 @@ public class MainDashboardView extends StackPane {
     }
     // Tạo biểu đồ tròn
     private PieChart createPieChart(java.util.List<Book> books, java.util.List<Loan> loans) {
+        // Dữ liệu được tính toán từ danh sách mới nhất truyền vào từ showDashboard()
         long inStock = books.stream().mapToLong(Book::getQuantity).sum();
-        long borrowed = loans.stream().filter(l -> !l.isReturned()).count();
-// Giả sử mỗi phiếu mượn đại diện cho 1 cuốn sách đã mượn
+        long totalBorrowing = loans.stream().filter(l -> !l.isReturned()).count();
+        long overdue = loans.stream().filter(l -> l.isOverdue() && !l.isReturned()).count();
+        long onTime = totalBorrowing - overdue;
+        
+        long total = inStock + totalBorrowing;
+        if (total == 0) total = 1; // Tránh chia cho 0
+
+        // Thuật toán làm tròn thông minh để đảm bảo tổng luôn là 100%
+        int pOverdue = (int) Math.round(100.0 * overdue / total);
+        int pOnTime = (int) Math.round(100.0 * onTime / total);
+        int pInStock = 100 - (pOverdue + pOnTime); 
+
         PieChart pie = new PieChart(FXCollections.observableArrayList(
-                new PieChart.Data("Trong Kho", inStock),
-                new PieChart.Data("Đang Mượn", borrowed)
+                new PieChart.Data(String.format("Trong Kho (%d%%)", pInStock), inStock),
+                new PieChart.Data(String.format("Đúng Hạn (%d%%)", pOnTime), onTime),
+                new PieChart.Data(String.format("Quá Hạn (%d%%)", pOverdue), overdue)
         ));
+        
         pie.setLegendSide(Side.BOTTOM);
-        pie.setLabelsVisible(true);
+        pie.setLabelsVisible(true); 
+        pie.setStartAngle(90); 
+        pie.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return pie;
     }
     // Tạo biểu đồ cột
@@ -247,6 +318,7 @@ public class MainDashboardView extends StackPane {
         catMap.forEach((k, v) -> series.getData().add(new XYChart.Data<>(k, v)));
 
         bar.getData().add(series);
+        bar.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return bar;
     }
     // Xuất báo cáo hệ thống ra file CSV

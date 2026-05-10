@@ -8,6 +8,7 @@ public class Loan {
     private final StringProperty readerName = new SimpleStringProperty();
     private final StringProperty bookTitle = new SimpleStringProperty();
     private final ObjectProperty<LocalDate> borrowDate = new SimpleObjectProperty<>();
+    private final ObjectProperty<LocalDate> returnDate = new SimpleObjectProperty<>();
     private final StringProperty status = new SimpleStringProperty("ĐANG MƯỢN"); // Mặc định tiếng Việt
     private final IntegerProperty quantity = new SimpleIntegerProperty();
 
@@ -15,11 +16,12 @@ public class Loan {
     public static final String STATUS_BORROWED = "ĐANG MƯỢN";
     public static final String STATUS_RETURNED = "ĐÃ TRẢ";
 
-    public Loan(String id, String readerName, String bookTitle, LocalDate borrowDate, String status, int quantity) {
+    public Loan(String id, String readerName, String bookTitle, LocalDate borrowDate, LocalDate returnDate, String status, int quantity) {
         this.id.set(id);
         this.readerName.set(readerName);
         this.bookTitle.set(bookTitle);
         this.borrowDate.set(borrowDate);
+        this.returnDate.set(returnDate);
         setStatus(status); // Dùng setter để chuẩn hóa
         this.quantity.set(quantity);
     }
@@ -35,6 +37,9 @@ public class Loan {
 
     public ObjectProperty<LocalDate> borrowDateProperty() { return borrowDate; }
     public LocalDate getBorrowDate() { return borrowDate.get(); }
+
+    public ObjectProperty<LocalDate> returnDateProperty() { return returnDate; }
+    public LocalDate getReturnDate() { return returnDate.get(); }
 
     public StringProperty statusProperty() { return status; }
     public String getStatus() { return status.get(); }
@@ -63,8 +68,38 @@ public class Loan {
         return STATUS_RETURNED.equals(getStatus());
     }
 
+    public boolean isOverdue() {
+        if (isReturned() || getReturnDate() == null) return false;
+        return LocalDate.now().isAfter(getReturnDate());
+    }
+
+    public long getRemainingDays() {
+        if (isReturned() || getReturnDate() == null) return 0;
+        return java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), getReturnDate());
+    }
+
+    public String getOverdueMessage() {
+        if (isReturned()) return "Đã trả";
+        long days = getRemainingDays();
+        if (days < 0) return "Quá hạn " + Math.abs(days) + " ngày";
+        if (days == 0) return "Hết hạn hôm nay";
+        return "Còn " + days + " ngày";
+    }
+
+    public String getActionSuggestion() {
+        if (isReturned()) return "Hợp lệ";
+        if (isOverdue()) {
+            long overdueDays = -getRemainingDays();
+            if (overdueDays > 7) return "Cảnh báo / Thu hồi gấp";
+            return "Nhắc nhở / Liên hệ";
+        }
+        return "Theo dõi";
+    }
+
     // Phương thức tiện lợi để lấy class badge cho CSS
     public String getStatusBadgeClass() {
-        return isReturned() ? "badge-da-tra" : "badge-dang-muon";
+        if (isReturned()) return "badge-da-tra";
+        if (isOverdue()) return "badge-qua-han";
+        return "badge-dang-muon";
     }
 }

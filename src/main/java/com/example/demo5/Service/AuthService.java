@@ -1,5 +1,4 @@
 package com.example.demo5.Service;
-
 import com.example.demo5.Config.DatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +90,7 @@ public class AuthService {
         if (computed == null) return false;
         return MessageDigest.isEqual(hash, computed);
     }
-
+// mã hóa PBKDF2 với HMAC-SHA256
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int keyLength) {
         try {
             PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);

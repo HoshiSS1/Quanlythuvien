@@ -38,6 +38,9 @@ public class DatabaseManager {
             hikariConfig.setConnectionTimeout(30000);
             hikariConfig.setMaxLifetime(1800000);
             
+            // QUAN TRỌNG: Khởi tạo bất đồng bộ để không block UI lúc khởi động nếu DB chậm
+            hikariConfig.setInitializationFailTimeout(-1);
+            
             // Cấu hình Driver class nếu cần (MSSQL)
             hikariConfig.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
