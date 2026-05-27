@@ -164,13 +164,10 @@ public class MainDashboardView extends StackPane {
         topBar.getChildren().add(lblPageTitle);
         return topBar;
     }
-    // Hiển thị view với tiêu đề và nội dung cụ thể
-    private void showView(String title, Node view) {
-        lblPageTitle.setText(title);
-        mainContentArea.getChildren().setAll(view);
-    }
+
     // Hiển thị dashboard với các thống kê và biểu đồ (tải bất đồng bộ)
     private void showDashboard() {
+        currentView = ViewType.DASHBOARD;
         lblPageTitle.setText("Tổng Quan Hệ Thống");
         mainContentArea.getChildren().clear();
 
@@ -340,17 +337,31 @@ public class MainDashboardView extends StackPane {
                     case BOOKS -> {
                         sb.append("Mã Sách,Tên Sách,Tác Giả,Thể Loại,Số Lượng\n");
                         for (Book b : BookService.getBooks())
-                            sb.append(String.format("%s,%s,%s,%s,%d\n", b.getId(), b.getTitle(), b.getAuthor(), b.getCategory(), b.getQuantity()));
+                            sb.append(String.format("\"%s\",\"%s\",\"%s\",\"%s\",%d\n", 
+                                    b.getId(), 
+                                    b.getTitle().replace("\"", "\"\""), 
+                                    b.getAuthor().replace("\"", "\"\""), 
+                                    b.getCategory().replace("\"", "\"\""), 
+                                    b.getQuantity()));
                     }
                     case READERS -> {
                         sb.append("Mã SV,Họ Tên,Email,Số Điện Thoại\n");
                         for (Reader r : ReaderService.getReaders())
-                            sb.append(String.format("%s,%s,%s,%s\n", r.getId(), r.getName(), r.getEmail(), r.getPhone()));
+                            sb.append(String.format("\"%s\",\"%s\",\"%s\",\"%s\"\n", 
+                                    r.getId(), 
+                                    r.getName().replace("\"", "\"\""), 
+                                    r.getEmail().replace("\"", "\"\""), 
+                                    r.getPhone().replace("\"", "\"\"")));
                     }
                     case LOANS -> {
                         sb.append("Mã Phiếu,Bạn Đọc,Sách,Ngày Mượn,Trạng Thái\n");
                         for (Loan l : LibraryService.getAllLoans())
-                            sb.append(String.format("%s,%s,%s,%s,%s\n", l.getId(), l.getReaderName(), l.getBookTitle(), l.getBorrowDate(), l.getStatus()));
+                            sb.append(String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n", 
+                                    l.getId(), 
+                                    l.getReaderName().replace("\"", "\"\""), 
+                                    l.getBookTitle().replace("\"", "\"\""), 
+                                    l.getBorrowDate(), 
+                                    l.getStatus().replace("\"", "\"\"")));
                     }
                     default -> sb.append("Dữ liệu tổng quan không hỗ trợ xuất CSV chi tiết.\n");
                 }

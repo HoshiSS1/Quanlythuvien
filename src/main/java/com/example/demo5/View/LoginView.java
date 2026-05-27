@@ -31,8 +31,6 @@ public class LoginView extends StackPane {
         this.getStyleClass().clear();
         this.getStyleClass().add("login-root");
 
-        this.getStyleClass().add("login-root");
-
         StackPane card = new StackPane();
         card.getStyleClass().add("glass-card"); // Max size sang CSS
 

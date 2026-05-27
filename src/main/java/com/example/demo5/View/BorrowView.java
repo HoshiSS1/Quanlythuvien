@@ -435,7 +435,7 @@ public class BorrowView extends BaseEntityView<Loan> {
         TableView<Map<String, String>> tblSummary = new TableView<>(summaryData);
         tblSummary.setPrefHeight(220);
         tblSummary.getStyleClass().add("modern-table");
-        tblSummary.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tblSummary.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         TableColumn<Map<String, String>, String> colReader = new TableColumn<>("Bạn Đọc");
         colReader.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().get("readerName")));

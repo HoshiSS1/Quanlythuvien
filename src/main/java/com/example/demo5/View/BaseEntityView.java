@@ -28,7 +28,7 @@ public abstract class BaseEntityView<T> extends VBox {
         HBox toolbar = createToolbar();
         table = new TableView<>();
         table.getStyleClass().add("modern-table");
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         VBox.setVgrow(table, Priority.ALWAYS);
 
         setupTableColumns();
